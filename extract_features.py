@@ -34,7 +34,7 @@ def extract_features(image, mask):
     asymmetry_score = computeAsymmetry(mask)
 
     # Measuring colour
-    colour_score = how_many_colours_are_there(image, mask, hue_range = 60)
+    colour_score = how_many_colours_are_there(image, mask, hue_range = 45)
    
     # Measuring dots
     dots_score = computeDotsScore(image,mask)
@@ -329,7 +329,7 @@ def getColorFeatures(image, mask):
 
 
     #This function is the "ultimate" one that should be used
-def how_many_colours_are_there(image, mask, hue_range = 7):
+def how_many_colours_are_there(image, mask, hue_range = 45):
 
     '''
     Counts the number of diifferent colours are in an image.
@@ -357,6 +357,10 @@ def how_many_colours_are_there(image, mask, hue_range = 7):
             if lower_bound_for_next_colour > 360:
                 break
             number_of_colours +=1
+
+    #checking if last hue and first hue are too close to be considered different
+    if (hues_for_all_regions[-1] - 360 + hue_range) > first_colour:
+        number_of_colours -=1
     
     #Checks if the last hue is close to the first hue (since hue is a circular scale)
     if (hue - 360 + hue_range) > first_colour:
